@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuranConnect Pro - By Yasin Ullah</title>
+    <style>
+        /* Reset and Base Styles */
+        :root {
+            --bg-color: #1a1a2e; /* Neural Weave Dark Blue/Purple */
+            --primary-color: #00ffff; /* Cyan/Aqua for highlights */
+            --secondary-color: #9400d3; /* Dark Violet for accents */
+            --text-color: #e0e0e0;
+            --text-muted-color: #a0a0a0;
+            --border-color: #007777; /* Darker Cyan for borders */
+            --panel-bg-color: #1f1f3a;
+            --input-bg-color: #2a2a4a;
+            --input-border-color: var(--primary-color);
+            --button-bg-color: var(--secondary-color);
+            --button-hover-bg-color: #7a00aa;
+            --button-text-color: #ffffff;
+            --link-color: var(--primary-color);
+            --font-family-sans-serif: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family-arabic: 'Noto Naskh Arabic', 'Traditional Arabic', Arial, sans-serif;
+            --font-family-urdu: 'Noto Nastaliq Urdu', 'Urdu Typesetting', Arial, sans-serif;
+            --font-family-pashto: 'Noto Sans Pashto', 'PakType Tehreer', Arial, sans-serif;
+            --glow-effect: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--primary-color);
+            --psionic-trail-color: var(--primary-color);
+        }
+
+        .theme-ancient-scroll {
+            --bg-color: #f5e8c8; /* Parchment */
+            --primary-color: #8B4513; /* SaddleBrown */
+            --secondary-color: #A0522D; /* Sienna */
+            --text-color: #3a2d1c;
+            --text-muted-color: #5c4a3a;
+            --border-color: #8B4513;
+            --panel-bg-color: #ebd8b0;
+            --input-bg-color: #faf0d8;
+            --input-border-color: var(--primary-color);
+            --button-bg-color: var(--secondary-color);
+            --button-hover-bg-color: #7a3e22;
+            --button-text-color: #f5e8c8;
+            --link-color: var(--primary-color);
+            --font-family-sans-serif: 'Georgia', 'Times New Roman', Times, serif;
+            --font-family-arabic: 'KFGQPC Uthman Taha Naskh', 'Noto Naskh Arabic', serif;
+            --font-family-urdu: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif;
+            --font-family-pashto: 'Noto Sans Pashto', 'PakType Tehreer', serif;
+            --glow-effect: none;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family-sans-serif);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--panel-bg-color);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 1.8em;
+            text-shadow: var(--glow-effect);
+        }
+        header h1 .author-name {
+            font-size: 0.6em;
+            color: var(--text-muted-color);
+            font-weight: normal;
+        }
+
+        .controls button, .controls select, .controls input[type="file"] {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .controls button:hover, .controls select:hover {
+            background-color: var(--button-hover-bg-color);
+            box-shadow: var(--glow-effect);
+        }
+        .controls input[type="file"] { display: none; } /* Hide default, style label */
+        .controls label.file-upload-label {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        .controls label.file-upload-label:hover {
+            background-color: var(--button-hover-bg-color);
+            box-shadow: var(--glow-effect);
+        }
+
+
+        /* Tabs */
+        .tab-navigation {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            color: var(--text-muted-color);
+            font-size: 1em;
+            border-bottom: 3px solid transparent;
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: bold;
+        }
+        .tab-button:hover {
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--panel-bg-color);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            min-height: 60vh;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* General UI Elements */
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-muted-color);
+        }
+        input[type="text"], input[type="search"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: var(--input-bg-color);
+            border: 1px solid var(--input-border-color);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-family: inherit; /* For select to inherit body font */
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: var(--button-hover-bg-color);
+            box-shadow: var(--glow-effect);
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:hover {
+            background-color: #c82333;
+        }
+
+        /* RTL text styling */
+        .arabic-text, .urdu-text, .pashto-text {
+            direction: rtl;
+            text-align: right;
+        }
+        .arabic-text { font-family: var(--font-family-arabic); font-size: 1.5em; line-height: 1.8; }
+        .urdu-text { font-family: var(--font-family-urdu); font-size: 1.3em; line-height: 1.7; }
+        .pashto-text { font-family: var(--font-family-pashto); font-size: 1.3em; line-height: 1.7; }
+
+        /* Ayah Display */
+        .ayah-item {
+            background-color: var(--input-bg-color);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border-left: 5px solid var(--secondary-color);
+            cursor: pointer;
+        }
+        .ayah-item:hover, .ayah-item.selected {
+            border-left-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+        .ayah-meta {
+            font-size: 0.9em;
+            color: var(--text-muted-color);
+            margin-top: 5px;
+        }
+
+        /* Graph Visualization */
+        #graph-container {
+            width: 100%;
+            height: 500px; /* Adjust as needed */
+            background-color: var(--bg-color); /* Match body for seamless look */
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            position: relative;
+        }
+        /* Cytoscape styles will be applied via JS, but some base styling might be useful */
+        .cytoscape-tooltip {
+            position: absolute;
+            background-color: var(--panel-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--primary-color);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+            pointer-events: none; /* Important for mouse events to pass through to graph */
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+
+        /* Concordance & Link List */
+        .list-item {
+            background-color: var(--input-bg-color);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 3px;
+        }
+        .list-item .actions button {
+            margin-left: 5px;
+            padding: 5px 8px;
+            font-size: 0.9em;
+        }
+
+        /* Heatmap */
+        #heatmap-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .surah-heatmap-cell {
+            background-color: var(--input-bg-color);
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .surah-heatmap-cell h4 { color: var(--primary-color); margin-bottom: 5px; }
+        .theme-intensity-bar {
+            height: 10px;
+            background-color: var(--secondary-color);
+            border-radius: 3px;
+            margin-top: 3px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+        }
+        .modal-content {
+            background-color: var(--panel-bg-color);
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .close-button {
+            color: var(--text-muted-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover, .close-button:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+
+        /* Loading spinner */
+        .loader {
+            border: 5px solid var(--border-color);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* WCAG Focus visibility */
+        *:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* For the "psionic energy trails" on graph edges (conceptual) */
+        /* This will be mostly handled by Cytoscape.js styling options */
+        .cy-edge-psionic {
+            /* Example: target-arrow-shape: triangle; target-arrow-color: var(--psionic-trail-color); */
+            /* line-style: dashed; animation-name: psionicFlow; animation-duration: 2s; animation-iteration-count: infinite; */
+        }
+        @keyframes psionicFlow {
+            to {
+                /* stroke-dashoffset: -20; /* Adjust based on line-dash-pattern */
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            header h1 { font-size: 1.5em; margin-bottom: 10px; }
+            .controls { margin-top: 10px; }
+            .controls button, .controls select, .controls label.file-upload-label { margin-left: 0; margin-right: 5px; margin-bottom: 5px; }
+            .tab-navigation { flex-direction: column; }
+            .tab-button { width: 100%; text-align: left; border-bottom: 1px solid var(--border-color); }
+            .tab-button.active { border-bottom-color: var(--primary-color); }
+            .modal-content { width: 95%; margin: 5% auto; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>QuranConnect Pro <span class="author-name">by Yasin Ullah (Pakistani)</span></h1>
+            <div class="controls">
+                <select id="themeSwitcher">
+                    <option value="neural-weave">Neural Weave (Default)</option>
+                    <option value="ancient-scroll">Ancient Scroll</option>
+                </select>
+                <button id="backupDataBtn">Backup Data</button>
+                <label for="restoreDataFile" class="file-upload-label">Restore Data</label>
+                <input type="file" id="restoreDataFile" accept=".json">
+            </div>
+        </header>
+
+        <div id="initialLoadingScreen">
+            <h2>Loading QuranConnect Pro...</h2>
+            <p>If this is your first time, please select the <code>data.AM</code> file when prompted, or ensure it is in the same directory as this HTML file.</p>
+            <input type="file" id="dataAmFile" accept=".AM" class="hidden">
+            <button id="selectDataAmBtn" class="hidden">Select data.AM File</button>
+            <div id="loadingSpinner" class="loader hidden"></div>
+            <p id="loadingStatus"></p>
+        </div>
+
+        <main id="appContent" class="hidden">
+            <div class="tab-navigation">
+                <button class="tab-button active" data-tab="quranBrowserTab">Quran Browser</button>
+                <button class="tab-button" data-tab="linkerTab">Thematic Linker</button>
+                <button class="tab-button" data-tab="themesTab">Theme Manager</button>
+                <button class="tab-button" data-tab="concordanceTab">Concordance Builder</button>
+                <button class="tab-button" data-tab="graphTab">Network Visualizer</button>
+                <button class="tab-button" data-tab="searchTab">Advanced Search</button>
+                <button class="tab-button" data-tab="heatmapTab">Semantic Heatmap</button>
+            </div>
+
+            <!-- Quran Browser Tab -->
+            <div id="quranBrowserTab" class="tab-content active">
+                <h2>Quran Browser</h2>
+                <div style="display: flex; gap: 20px;">
+                    <div style="flex: 1;">
+                        <label for="surahSelect">Select Surah:</label>
+                        <select id="surahSelect"></select>
+                        <div id="ayahListContainer" style="max-height: 500px; overflow-y: auto; margin-top:10px;">
+                            <!-- Ayahs will be listed here -->
+                        </div>
+                    </div>
+                    <div style="flex: 2;" id="selectedAyahDisplay">
+                        <h3>Selected Ayah Details</h3>
+                        <p>Select an Ayah from the list to see details.</p>
+                        <div id="ayahDetailContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thematic Linker Tab -->
+            <div id="linkerTab" class="tab-content">
+                <h2>Thematic Linker</h2>
+                <p>Select two Ayahs from the Quran Browser or search to link them.</p>
+                <div>
+                    <label for="linkAyah1">Ayah 1 (S:A):</label>
+                    <input type="text" id="linkAyah1" placeholder="e.g., 2:255 (Selected from browser or enter manually)">
+                    <button id="setAyah1FromSelectionBtn">Set from Current Ayah</button>
+                </div>
+                <div>
+                    <label for="linkAyah2">Ayah 2 (S:A):</label>
+                    <input type="text" id="linkAyah2" placeholder="e.g., 112:2 (Selected from browser or enter manually)">
+                    <button id="setAyah2FromSelectionBtn">Set from Current Ayah</button>
+                </div>
+                <div>
+                    <label for="linkThemes">Assign Theme(s):</label>
+                    <select id="linkThemes" multiple style="min-height: 100px;"></select>
+                    <small>Hold Ctrl/Cmd to select multiple themes.</small>
+                </div>
+                <div>
+                    <label for="linkNotes">Notes for Link:</label>
+                    <textarea id="linkNotes" placeholder="Justification for the link..."></textarea>
+                </div>
+                <button id="saveLinkBtn">Save Link</button>
+                <hr style="margin: 20px 0; border-color: var(--border-color);">
+                <h3>Existing Links</h3>
+                <div id="existingLinksContainer" style="max-height: 300px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Theme Manager Tab -->
+            <div id="themesTab" class="tab-content">
+                <h2>Theme Manager</h2>
+                <div>
+                    <label for="themeName">Theme Name:</label>
+                    <input type="text" id="themeName" placeholder="e.g., Tawhid, Prophethood">
+                </div>
+                <div>
+                    <label for="themeDescription">Description (Optional):</label>
+                    <textarea id="themeDescription" placeholder="Details about the theme..."></textarea>
+                </div>
+                <div>
+                    <label for="parentTheme">Parent Theme (for Sub-theme):</label>
+                    <select id="parentTheme">
+                        <option value="">None (Top-level theme)</option>
+                        <!-- Parent themes will be populated here -->
+                    </select>
+                </div>
+                <input type="hidden" id="editingThemeId">
+                <button id="saveThemeBtn">Save Theme</button>
+                <button id="cancelEditThemeBtn" class="hidden">Cancel Edit</button>
+                <hr style="margin: 20px 0; border-color: var(--border-color);">
+                <h3>Existing Themes</h3>
+                <div id="themesListContainer" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Concordance Builder Tab -->
+            <div id="concordanceTab" class="tab-content">
+                <h2>Personal Concordance Builder</h2>
+                <p>Log occurrences of Arabic root words or keywords in translations.</p>
+                <div>
+                    <label for="concordanceKeyword">Keyword/Root:</label>
+                    <input type="text" id="concordanceKeyword" placeholder="e.g., ر ح م or Mercy">
+                </div>
+                <div>
+                    <label for="concordanceType">Type:</label>
+                    <select id="concordanceType">
+                        <option value="root">Arabic Root</option>
+                        <option value="translation">Translation Keyword</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="concordanceAyah">Associated Ayah (S:A):</label>
+                    <input type="text" id="concordanceAyah" placeholder="e.g., 1:1 (Selected from browser or enter manually)">
+                    <button id="setConcordanceAyahFromSelectionBtn">Set from Current Ayah</button>
+                </div>
+                 <div>
+                    <label for="concordanceNotes">Notes (Optional):</label>
+                    <textarea id="concordanceNotes" placeholder="Context or specific meaning..."></textarea>
+                </div>
+                <button id="saveConcordanceEntryBtn">Save Concordance Entry</button>
+                <hr style="margin: 20px 0; border-color: var(--border-color);">
+                <h3>Concordance Entries</h3>
+                <div id="concordanceEntriesContainer" style="max-height: 300px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Network Visualizer Tab -->
+            <div id="graphTab" class="tab-content">
+                <h2>Thematic Network Visualizer</h2>
+                <p>Interactive graph of your Ayah links and themes. Nodes are Ayahs, edges represent links, colored by theme.</p>
+                <div id="graph-container"></div>
+                <div class="controls mt-2">
+                    <label for="graphFilterTheme">Filter by Theme:</label>
+                    <select id="graphFilterTheme">
+                        <option value="">All Themes</option>
+                        <!-- Themes for filtering -->
+                    </select>
+                    <button id="refreshGraphBtn">Refresh Graph</button>
+                </div>
+            </div>
+
+            <!-- Advanced Search Tab -->
+            <div id="searchTab" class="tab-content">
+                <h2>Advanced Search</h2>
+                <div>
+                    <label for="searchQuery">Search Query:</label>
+                    <input type="search" id="searchQuery" placeholder="Search themes, link notes, concordance keywords...">
+                </div>
+                <button id="executeSearchBtn">Search</button>
+                <div id="searchResultsContainer" class="mt-2">
+                    <!-- Search results will appear here -->
+                </div>
+            </div>
+
+            <!-- Semantic Heatmap Tab -->
+            <div id="heatmapTab" class="tab-content">
+                <h2>Semantic Heatmap of Themes</h2>
+                <p>Visual representation of theme distribution across Surahs based on your links.</p>
+                <div class="controls mb-2">
+                    <label for="heatmapThemeSelect">Select Theme for Heatmap:</label>
+                    <select id="heatmapThemeSelect">
+                        <option value="">All Themes (Overall Activity)</option>
+                        <!-- Themes for heatmap -->
+                    </select>
+                </div>
+                <div id="heatmap-container">
+                    <!-- Heatmap cells will be generated here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal for Ayah Quick View / Selection (if needed beyond main display) -->
+        <div id="ayahQuickViewModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="document.getElementById('ayahQuickViewModal').style.display='none'">&times;</span>
+                <h3 id="modalAyahRef"></h3>
+                <div id="modalAyahArabic" class="arabic-text"></div>
+                <div id="modalAyahUrdu" class="urdu-text"></div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; padding: 20px; margin-top: 30px; color: var(--text-muted-color); border-top: 1px solid var(--border-color);">
+            QuranConnect Pro &copy; <span id="currentYear"></span> Yasin Ullah. Offline Quranic Study Tool.
+        </footer>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.32.0/dist/cytoscape.min.js"></script>
+    <!-- Cytoscape.js library (minified version) -->
+    <script>
+        
+        /*
+        Cytoscape.js v3.23.0 | (c) 2016-2022 Cytoscape Consortium
+        Released under the MIT license
+        https://github.com/cytoscape/cytoscape.js/blob/master/LICENSE
+        */
+        // Content of cytoscape.min.js (approx 250KB) would be pasted here.
+        // For brevity in this example, it's omitted.
+        // In a real deployment, you would paste the entire minified library code here.
+        // Placeholder: console.warn("Cytoscape.js library should be embedded here.");
+        fetch('https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js').then(r=>r.text()).then(t => console.log("Cytoscape length:", t.length));
+        // For now, we'll define a dummy cytoscape if it's not loaded to prevent errors during development without the full lib.
+        if (typeof cytoscape === 'undefined') {
+            console.warn("Cytoscape.js is not embedded. Graph visualization will not work.");
+            window.cytoscape = function(options) {
+                console.log("Dummy Cytoscape initialized with options:", options);
+                const container = options.container;
+                if (container) {
+                    container.innerHTML = "<p style='color:red; text-align:center; padding-top: 50px;'>Cytoscape.js library not embedded. Graph cannot be displayed.</p>";
+                }
+                return {
+                    add: function() {},
+                    remove: function() {},
+                    elements: function() { return { layout: function() { return { run: function() {} }; }, on: function() {} }; },
+                    layout: function() { return { run: function() {} }; },
+                    style: function() { return this; },
+                    on: function() {},
+                    resize: function() {},
+                    center: function() {},
+                    fit: function() {},
+                    destroy: function() { if(container) container.innerHTML = ""; }
+                };
+            };
+        }
+    </script>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const DB_NAME = 'QuranConnectProDBq';
+            const DB_VERSION = 1;
+            const STORES = {
+                ayahs: 'ayahs',
+                themes: 'themes',
+                links: 'links',
+                concordance: 'concordance',
+                settings: 'settings'
+            };
+
+            let db;
+            let cy; // Cytoscape instance
+            let currentSelectedAyah = null; // Stores {surah, ayahNum, arabic, urdu}
+            let surahMeta = []; // To store {surahNum, name, ayahCount} - needs to be populated or derived
+
+            // --- DOM Elements ---
+            const initialLoadingScreen = document.getElementById('initialLoadingScreen');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const loadingStatus = document.getElementById('loadingStatus');
+            const dataAmFileInput = document.getElementById('dataAmFile');
+            const selectDataAmBtn = document.getElementById('selectDataAmBtn');
+            const appContent = document.getElementById('appContent');
+
+            const surahSelect = document.getElementById('surahSelect');
+            const ayahListContainer = document.getElementById('ayahListContainer');
+            const selectedAyahDisplay = document.getElementById('selectedAyahDisplay');
+            const ayahDetailContent = document.getElementById('ayahDetailContent');
+
+            const linkAyah1Input = document.getElementById('linkAyah1');
+            const linkAyah2Input = document.getElementById('linkAyah2');
+            const linkThemesSelect = document.getElementById('linkThemes');
+            const linkNotesInput = document.getElementById('linkNotes');
+            const existingLinksContainer = document.getElementById('existingLinksContainer');
+
+            const themeNameInput = document.getElementById('themeName');
+            const themeDescriptionInput = document.getElementById('themeDescription');
+            const parentThemeSelect = document.getElementById('parentTheme');
+            const editingThemeIdInput = document.getElementById('editingThemeId');
+            const themesListContainer = document.getElementById('themesListContainer');
+            const cancelEditThemeBtn = document.getElementById('cancelEditThemeBtn');
+
+            const concordanceKeywordInput = document.getElementById('concordanceKeyword');
+            const concordanceTypeSelect = document.getElementById('concordanceType');
+            const concordanceAyahInput = document.getElementById('concordanceAyah');
+            const concordanceNotesInput = document.getElementById('concordanceNotes');
+            const concordanceEntriesContainer = document.getElementById('concordanceEntriesContainer');
+
+            const graphContainer = document.getElementById('graph-container');
+            const graphFilterThemeSelect = document.getElementById('graphFilterTheme');
+            
+            const searchQueryInput = document.getElementById('searchQuery');
+            const searchResultsContainer = document.getElementById('searchResultsContainer');
+
+            const heatmapThemeSelect = document.getElementById('heatmapThemeSelect');
+            const heatmapContainer = document.getElementById('heatmap-container');
+
+            const themeSwitcher = document.getElementById('themeSwitcher');
+
+
+            // --- Database Operations ---
+            const DB = {
+                open() {
+                    return new Promise((resolve, reject) => {
+                        const request = indexedDB.open(DB_NAME, DB_VERSION);
+                        request.onerror = (event) => reject('Error opening DB: ' + event.target.errorCode);
+                        request.onsuccess = (event) => {
+                            db = event.target.result;
+                            resolve(db);
+                        };
+                        request.onupgradeneeded = (event) => {
+                            db = event.target.result;
+                            if (!db.objectStoreNames.contains(STORES.ayahs)) {
+                                db.createObjectStore(STORES.ayahs, { keyPath: 'id' }); // id = SXXXAYYY
+                            }
+                            if (!db.objectStoreNames.contains(STORES.themes)) {
+                                const themesStore = db.createObjectStore(STORES.themes, { keyPath: 'id', autoIncrement: true });
+                                themesStore.createIndex('name', 'name', { unique: false });
+                            }
+                            if (!db.objectStoreNames.contains(STORES.links)) {
+                                const linksStore = db.createObjectStore(STORES.links, { keyPath: 'id', autoIncrement: true });
+                                linksStore.createIndex('ayahId1', 'ayahId1', { unique: false });
+                                linksStore.createIndex('ayahId2', 'ayahId2', { unique: false });
+                                linksStore.createIndex('themeIds', 'themeIds', { multiEntry: true });
+                            }
+                            if (!db.objectStoreNames.contains(STORES.concordance)) {
+                                const concordanceStore = db.createObjectStore(STORES.concordance, { keyPath: 'id', autoIncrement: true });
+                                concordanceStore.createIndex('keyword', 'keyword', { unique: false });
+                                concordanceStore.createIndex('ayahId', 'ayahId', { unique: false });
+                            }
+                            if (!db.objectStoreNames.contains(STORES.settings)) {
+                                db.createObjectStore(STORES.settings, { keyPath: 'key' });
+                            }
+                        };
+                    });
+                },
+                async getSetting(key) {
+                    const tx = db.transaction(STORES.settings, 'readonly');
+                    const store = tx.objectStore(STORES.settings);
+                    const req = store.get(key);
+                    return new Promise((resolve, reject) => {
+                        req.onsuccess = () => resolve(req.result ? req.result.value : undefined);
+                        req.onerror = () => reject(req.error);
+                    });
+                },
+                async setSetting(key, value) {
+                    const tx = db.transaction(STORES.settings, 'readwrite');
+                    const store = tx.objectStore(STORES.settings);
+                    const req = store.put({ key, value });
+                    return new Promise((resolve, reject) => {
+                        req.onsuccess = () => resolve();
+                        req.onerror = () => reject(req.error);
+                    });
+                },
+                async addItems(storeName, items) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    items.forEach(item => store.add(item));
+                    return new Promise((resolve, reject) => {
+                        transaction.oncomplete = () => resolve();
+                        transaction.onerror = (event) => reject('Transaction error: ' + event.target.errorCode);
+                    });
+                },
+                async addItem(storeName, item) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.add(item);
+                    return new Promise((resolve, reject) => {
+                        request.onsuccess = () => resolve(request.result); // Returns the key of the new record
+                        request.onerror = (event) => reject('Add item error: ' + event.target.errorCode);
+                    });
+                },
+                async updateItem(storeName, item) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.put(item);
+                    return new Promise((resolve, reject) => {
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = (event) => reject('Update item error: ' + event.target.errorCode);
+                    });
+                },
+                async getItem(storeName, key) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.get(key);
+                    return new Promise((resolve, reject) => {
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = (event) => reject('Get item error: ' + event.target.errorCode);
+                    });
+                },
+                async getAll(storeName) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.getAll();
+                    return new Promise((resolve, reject) => {
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = (event) => reject('Get all error: ' + event.target.errorCode);
+                    });
+                },
+                async deleteItem(storeName, key) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.delete(key);
+                    return new Promise((resolve, reject) => {
+                        request.onsuccess = () => resolve();
+                        request.onerror = (event) => reject('Delete item error: ' + event.target.errorCode);
+                    });
+                },
+                async count(storeName) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.count();
+                    return new Promise((resolve, reject) => {
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = (event) => reject('Count error: ' + event.target.errorCode);
+                    });
+                },
+                async clearStore(storeName) {
+                    if (!db) await this.open();
+                    const transaction = db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.clear();
+                    return new Promise((resolve, reject) => {
+                        request.onsuccess = () => resolve();
+                        request.onerror = (event) => reject('Clear store error: ' + event.target.errorCode);
+                    });
+                }
+            };
+
+            // --- Quran Data Loading and Parsing ---
+            const QuranData = {
+                parseAyahLine(line) {
+                    // Example: بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ ترجمہ: شروع اللہ کے نام سے جو بڑا مہربان نہایت رحم والا ہے<br/>س 001 آ 001
+                    const match = line.match(/^(.*?) ترجمہ: (.*?)<br\/>س (\d{3}) آ (\d{3})$/);
+                    if (match) {
+                        return {
+                            arabic: match[1].trim(),
+                            urdu: match[2].trim(),
+                            surah: parseInt(match[3]),
+                            ayahNum: parseInt(match[4]),
+                            id: `S${match[3]}A${match[4]}`
+                        };
+                    }
+                    return null;
+                },
+                async loadAndStore(fileOrText) {
+                    loadingStatus.textContent = 'Parsing Quran data...';
+                    loadingSpinner.classList.remove('hidden');
+                    
+                    let lines;
+                    if (typeof fileOrText === 'string') {
+                        lines = fileOrText.split('\n');
+                    } else { // File object
+                        const text = await fileOrText.text();
+                        lines = text.split('\n');
+                    }
+
+                    const ayahs = [];
+                    for (const line of lines) {
+                        if (line.trim() === '') continue;
+                        const parsed = this.parseAyahLine(line);
+                        if (parsed) {
+                            ayahs.push(parsed);
+                        } else {
+                            console.warn('Could not parse line:', line);
+                        }
+                    }
+
+                    if (ayahs.length > 0) {
+                        loadingStatus.textContent = `Storing ${ayahs.length} Ayahs in the database... This may take a moment.`;
+                        try {
+                            // Batch add for performance
+                            const batchSize = 500;
+                            for (let i = 0; i < ayahs.length; i += batchSize) {
+                                const batch = ayahs.slice(i, i + batchSize);
+                                await DB.addItems(STORES.ayahs, batch);
+                                loadingStatus.textContent = `Stored ${i + batch.length} of ${ayahs.length} Ayahs...`;
+                            }
+                            await DB.setSetting('dataLoaded', true);
+                            await DB.setSetting('totalAyahs', ayahs.length);
+                            loadingStatus.textContent = 'Quran data loaded successfully!';
+                            return true;
+                        } catch (error) {
+                            loadingStatus.textContent = 'Error storing Quran data: ' + error;
+                            console.error('Error storing Quran data:', error);
+                            return false;
+                        }
+                    } else {
+                        loadingStatus.textContent = 'No Ayahs found in the provided data.';
+                        return false;
+                    }
+                },
+                async checkAndLoadDataAM() {
+                    const dataLoaded = await DB.getSetting('dataLoaded');
+                    if (dataLoaded) {
+                        loadingStatus.textContent = 'Quran data already loaded.';
+                        return true;
+                    }
+
+                    loadingStatus.textContent = 'Attempting to fetch data.AM...';
+                    loadingSpinner.classList.remove('hidden');
+                    try {
+                        const response = await fetch('data.AM');
+                        if (response.ok) {
+                            const text = await response.text();
+                            return await this.loadAndStore(text);
+                        } else {
+                            loadingStatus.textContent = 'data.AM not found automatically. Please select the file.';
+                            selectDataAmBtn.classList.remove('hidden');
+                            dataAmFileInput.classList.remove('hidden'); // Show the actual input
+                            selectDataAmBtn.onclick = () => dataAmFileInput.click(); // Trigger file input
+                            return new Promise(resolve => {
+                                dataAmFileInput.onchange = async (event) => {
+                                    const file = event.target.files[0];
+                                    if (file) {
+                                        selectDataAmBtn.classList.add('hidden');
+                                        dataAmFileInput.classList.add('hidden');
+                                        resolve(await this.loadAndStore(file));
+                                    } else {
+                                        resolve(false); // No file selected
+                                    }
+                                };
+                            });
+                        }
+                    } catch (error) {
+                        loadingStatus.textContent = 'Error fetching data.AM. Please select the file manually. ' + error;
+                        selectDataAmBtn.classList.remove('hidden');
+                        dataAmFileInput.classList.remove('hidden');
+                        selectDataAmBtn.onclick = () => dataAmFileInput.click();
+                        return new Promise(resolve => {
+                             dataAmFileInput.onchange = async (event) => {
+                                const file = event.target.files[0];
+                                if (file) {
+                                    selectDataAmBtn.classList.add('hidden');
+                                    dataAmFileInput.classList.add('hidden');
+                                    resolve(await this.loadAndStore(file));
+                                } else {
+                                    resolve(false);
+                                }
+                            };
+                        });
+                    }
+                },
+                async getSurahList() {
+                    // This needs actual Surah names. For now, just numbers.
+                    // A proper implementation would have a Surah metadata list.
+                    // For simplicity, assuming 114 Surahs.
+                    if (surahMeta.length === 0) { // Populate if empty
+                        // Placeholder Surah names - ideally this comes from a more structured source or data.AM itself if it had headers
+                        const placeholderSurahNames = [
+                            "Al-Fatiha", "Al-Baqarah", "Aal-Imran", "An-Nisa", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus",
+                            "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam", "Taha",
+                            "Al-Anbiya", "Al-Hajj", "Al-Muminun", "An-Nur", "Al-Furqan", "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-Ankabut", "Ar-Rum",
+                            "Luqman", "As-Sajdah", "Al-Ahzab", "Saba", "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir",
+                            "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiyah", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf",
+                            "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman", "Al-Waqi'ah", "Al-Hadid", "Al-Mujadila", "Al-Hashr", "Al-Mumtahanah",
+                            "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij",
+                            "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "Abasa",
+                            "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad",
+                            "Ash-Shams", "Al-Layl", "Ad-Duha", "Ash-Sharh", "At-Tin", "Al-Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-Adiyat",
+                            "Al-Qari'ah", "At-Takathur", "Al-Asr", "Al-Humazah", "Al-Fil", "Quraysh", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr",
+                            "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+                        ];
+                        for (let i = 1; i <= 114; i++) {
+                            // This is a simplified way to get Ayah counts. A proper way would be to query DB after loading.
+                            // For now, this is just for populating the select.
+                            surahMeta.push({ surahNum: i, name: placeholderSurahNames[i-1] || `Surah ${i}` });
+                        }
+                    }
+                    return surahMeta;
+                },
+                async getAyahsBySurah(surahNum) {
+                    if (!db) await DB.open();
+                    const transaction = db.transaction(STORES.ayahs, 'readonly');
+                    const store = transaction.objectStore(STORES.ayahs);
+                    // Ayah IDs are SXXXAYYY. We need to query based on SXXX.
+                    // This requires an index or iterating if not using IDBKeyRange efficiently for startsWith.
+                    // For simplicity, getAll and filter. For large datasets, an index on surah number would be better.
+                    const allAyahs = await DB.getAll(STORES.ayahs);
+                    return allAyahs.filter(a => a.surah === surahNum).sort((a,b) => a.ayahNum - b.ayahNum);
+                }
+            };
+
+            // --- UI Management ---
+            const UI = {
+                initTabs() {
+                    const tabButtons = document.querySelectorAll('.tab-button');
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            tabButtons.forEach(btn => btn.classList.remove('active'));
+                            tabContents.forEach(content => content.classList.remove('active'));
+                            button.classList.add('active');
+                            document.getElementById(button.dataset.tab).classList.add('active');
+                            
+                            // Special actions for specific tabs
+                            if (button.dataset.tab === 'graphTab') {
+                                UI.Graph.refresh(); // Refresh graph when tab is shown
+                            }
+                            if (button.dataset.tab === 'heatmapTab') {
+                                UI.Heatmap.render(); // Refresh heatmap
+                            }
+                        });
+                    });
+                },
+                async populateSurahSelect() {
+                    const surahs = await QuranData.getSurahList();
+                    surahSelect.innerHTML = ''; // Clear existing
+                    surahs.forEach(surah => {
+                        const option = document.createElement('option');
+                        option.value = surah.surahNum;
+                        option.textContent = `${surah.surahNum}. ${surah.name}`;
+                        surahSelect.appendChild(option);
+                    });
+                    surahSelect.onchange = () => this.displayAyahsForSurah(parseInt(surahSelect.value));
+                    if (surahs.length > 0) {
+                       this.displayAyahsForSurah(parseInt(surahs[0].surahNum)); // Load first surah by default
+                    }
+                },
+                async displayAyahsForSurah(surahNum) {
+                    ayahListContainer.innerHTML = '<div class="loader"></div>'; // Show loader
+                    const ayahs = await QuranData.getAyahsBySurah(surahNum);
+                    ayahListContainer.innerHTML = ''; // Clear loader/previous
+                    if (ayahs.length === 0) {
+                        ayahListContainer.innerHTML = '<p>No Ayahs found for this Surah (data might not be fully loaded or Surah is empty).</p>';
+                        return;
+                    }
+                    ayahs.forEach(ayah => {
+                        const item = document.createElement('div');
+                        item.className = 'ayah-item';
+                        item.dataset.id = ayah.id;
+                        item.innerHTML = `
+                            <p class="arabic-text">${ayah.arabic}</p>
+                            <p class="urdu-text">${ayah.urdu}</p>
+                            <p class="ayah-meta">Surah ${ayah.surah}, Ayah ${ayah.ayahNum}</p>
+                        `;
+                        item.onclick = () => this.selectAyah(ayah, item);
+                        ayahListContainer.appendChild(item);
+                    });
+                },
+                selectAyah(ayah, element) {
+                    currentSelectedAyah = ayah; // Store full ayah object
+                    // Visual selection
+                    document.querySelectorAll('.ayah-item.selected').forEach(el => el.classList.remove('selected'));
+                    if (element) element.classList.add('selected');
+
+                    // Display in detail panel
+                    ayahDetailContent.innerHTML = `
+                        <h4>${ayah.surah}:${ayah.ayahNum} (${ayah.id})</h4>
+                        <p class="arabic-text">${ayah.arabic}</p>
+                        <p class="urdu-text">${ayah.urdu}</p>
+                    `;
+                    // Update relevant input fields
+                    // This is a bit simplistic, might need better UX for which input to update
+                },
+                setAyahInputFromSelection(inputId) {
+                    const inputField = document.getElementById(inputId);
+                    if (currentSelectedAyah && inputField) {
+                        inputField.value = `${currentSelectedAyah.surah}:${currentSelectedAyah.ayahNum}`;
+                    } else {
+                        alert('Please select an Ayah from the Quran Browser first.');
+                    }
+                },
+                async populateThemeSelectors() { // Populates all theme dropdowns
+                    const themes = await DB.getAll(STORES.themes);
+                    const sortedThemes = themes.sort((a,b) => a.name.localeCompare(b.name));
+                    
+                    const createOptions = (selectElement) => {
+                        selectElement.innerHTML = ''; // Clear existing
+                        if (selectElement.id === 'parentTheme' || selectElement.id === 'graphFilterTheme' || selectElement.id === 'heatmapThemeSelect') {
+                            const defaultOpt = document.createElement('option');
+                            defaultOpt.value = "";
+                            defaultOpt.textContent = selectElement.id === 'parentTheme' ? "None (Top-level theme)" : "All Themes";
+                            selectElement.appendChild(defaultOpt);
+                        }
+                        sortedThemes.forEach(theme => {
+                            const option = document.createElement('option');
+                            option.value = theme.id;
+                            option.textContent = theme.name + (theme.parentId ? ` (Sub-theme)` : '');
+                            selectElement.appendChild(option);
+                        });
+                    };
+                    
+                    createOptions(linkThemesSelect);
+                    createOptions(parentThemeSelect);
+                    createOptions(graphFilterThemeSelect);
+                    createOptions(heatmapThemeSelect);
+                },
+                async renderThemesList() {
+                    themesListContainer.innerHTML = '<div class="loader"></div>';
+                    const themes = await DB.getAll(STORES.themes);
+                    themesListContainer.innerHTML = '';
+                    if (themes.length === 0) {
+                        themesListContainer.innerHTML = '<p>No themes created yet.</p>';
+                        return;
+                    }
+                    const ul = document.createElement('ul');
+                    ul.className = 'list-group';
+                    // Build a tree structure for display if parentId exists
+                    const themeMap = new Map(themes.map(t => [t.id, {...t, children: []}]));
+                    const rootThemes = [];
+                    themes.forEach(t => {
+                        if (t.parentId && themeMap.has(t.parentId)) {
+                            themeMap.get(t.parentId).children.push(themeMap.get(t.id));
+                        } else if (!t.parentId) {
+                            rootThemes.push(themeMap.get(t.id));
+                        }
+                    });
+
+                    const createThemeListItem = (theme, level = 0) => {
+                        const li = document.createElement('li');
+                        li.className = 'list-item';
+                        li.style.marginLeft = `${level * 20}px`;
+                        li.innerHTML = `
+                            <div>
+                                <strong>${theme.name}</strong>
+                                ${theme.description ? `<br><small>${theme.description}</small>` : ''}
+                            </div>
+                            <div class="actions">
+                                <button class="edit-theme-btn" data-id="${theme.id}">Edit</button>
+                                <button class="delete-theme-btn danger" data-id="${theme.id}">Delete</button>
+                            </div>
+                        `;
+                        ul.appendChild(li);
+                        theme.children.sort((a,b) => a.name.localeCompare(b.name)).forEach(child => createThemeListItem(child, level + 1));
+                    };
+                    
+                    rootThemes.sort((a,b) => a.name.localeCompare(b.name)).forEach(theme => createThemeListItem(theme));
+                    themesListContainer.appendChild(ul);
+
+                    document.querySelectorAll('.edit-theme-btn').forEach(btn => btn.onclick = (e) => this.editTheme(e.target.dataset.id));
+                    document.querySelectorAll('.delete-theme-btn').forEach(btn => btn.onclick = (e) => this.deleteTheme(e.target.dataset.id));
+                },
+                async saveTheme() {
+                    const name = themeNameInput.value.trim();
+                    const description = themeDescriptionInput.value.trim();
+                    const parentId = parentThemeSelect.value ? parseInt(parentThemeSelect.value) : null;
+                    const editingId = editingThemeIdInput.value ? parseInt(editingThemeIdInput.value) : null;
+
+                    if (!name) {
+                        alert('Theme name is required.');
+                        return;
+                    }
+
+                    const themeData = { name, description, parentId };
+                    try {
+                        if (editingId) {
+                            themeData.id = editingId;
+                            await DB.updateItem(STORES.themes, themeData);
+                            alert('Theme updated successfully.');
+                        } else {
+                            await DB.addItem(STORES.themes, themeData);
+                            alert('Theme saved successfully.');
+                        }
+                        this.clearThemeForm();
+                        this.renderThemesList();
+                        this.populateThemeSelectors();
+                        this.Graph.refresh(); // Update graph if themes changed
+                    } catch (error) {
+                        alert('Error saving theme: ' + error);
+                        console.error('Error saving theme:', error);
+                    }
+                },
+                async editTheme(id) {
+                    const theme = await DB.getItem(STORES.themes, parseInt(id));
+                    if (theme) {
+                        themeNameInput.value = theme.name;
+                        themeDescriptionInput.value = theme.description || '';
+                        parentThemeSelect.value = theme.parentId || '';
+                        editingThemeIdInput.value = theme.id;
+                        cancelEditThemeBtn.classList.remove('hidden');
+                        themeNameInput.focus();
+                    }
+                },
+                clearThemeForm() {
+                    themeNameInput.value = '';
+                    themeDescriptionInput.value = '';
+                    parentThemeSelect.value = '';
+                    editingThemeIdInput.value = '';
+                    cancelEditThemeBtn.classList.add('hidden');
+                },
+                async deleteTheme(id) {
+                    if (!confirm('Are you sure you want to delete this theme? This will also remove it from any links.')) return;
+                    try {
+                        await DB.deleteItem(STORES.themes, parseInt(id));
+                        // Also need to update links that use this theme
+                        const links = await DB.getAll(STORES.links);
+                        for (const link of links) {
+                            if (link.themeIds && link.themeIds.includes(parseInt(id))) {
+                                link.themeIds = link.themeIds.filter(tid => tid !== parseInt(id));
+                                await DB.updateItem(STORES.links, link);
+                            }
+                        }
+                        alert('Theme deleted successfully.');
+                        this.renderThemesList();
+                        this.populateThemeSelectors();
+                        this.renderLinksList();
+                        this.Graph.refresh();
+                    } catch (error) {
+                        alert('Error deleting theme: ' + error);
+                        console.error('Error deleting theme:', error);
+                    }
+                },
+                async saveLink() {
+                    const ayahId1Str = linkAyah1Input.value.trim();
+                    const ayahId2Str = linkAyah2Input.value.trim();
+                    const selectedThemeIds = Array.from(linkThemesSelect.selectedOptions).map(opt => parseInt(opt.value));
+                    const notes = linkNotesInput.value.trim();
+
+                    if (!ayahId1Str || !ayahId2Str) {
+                        alert('Both Ayah references are required.');
+                        return;
+                    }
+                    if (selectedThemeIds.length === 0) {
+                        alert('At least one theme must be selected for the link.');
+                        return;
+                    }
+
+                    const formatAyahId = (str) => { // Converts S:A to SXXXYYYY
+                        const parts = str.split(':');
+                        if (parts.length !== 2) return null;
+                        const s = parseInt(parts[0]);
+                        const a = parseInt(parts[1]);
+                        if (isNaN(s) || isNaN(a)) return null;
+                        return `S${String(s).padStart(3, '0')}A${String(a).padStart(3, '0')}`;
+                    };
+
+                    const ayahId1 = formatAyahId(ayahId1Str);
+                    const ayahId2 = formatAyahId(ayahId2Str);
+
+                    if (!ayahId1 || !ayahId2) {
+                        alert('Invalid Ayah format. Use S:A, e.g., 2:255.');
+                        return;
+                    }
+                    
+                    // Check if Ayahs exist (optional, but good for data integrity)
+                    const checkAyah1 = await DB.getItem(STORES.ayahs, ayahId1);
+                    const checkAyah2 = await DB.getItem(STORES.ayahs, ayahId2);
+                    if (!checkAyah1 || !checkAyah2) {
+                        alert(`One or both Ayahs (${ayahId1Str}, ${ayahId2Str}) not found in the database. Ensure data.AM is loaded and references are correct.`);
+                        return;
+                    }
+
+
+                    const linkData = { ayahId1, ayahId2, themeIds: selectedThemeIds, notes };
+                    try {
+                        await DB.addItem(STORES.links, linkData);
+                        alert('Link saved successfully.');
+                        linkAyah1Input.value = '';
+                        linkAyah2Input.value = '';
+                        linkNotesInput.value = '';
+                        linkThemesSelect.selectedIndex = -1; // Deselect all
+                        this.renderLinksList();
+                        this.Graph.refresh();
+                    } catch (error) {
+                        alert('Error saving link: ' + error);
+                        console.error('Error saving link:', error);
+                    }
+                },
+                async renderLinksList() {
+                    existingLinksContainer.innerHTML = '<div class="loader"></div>';
+                    const links = await DB.getAll(STORES.links);
+                    const themes = await DB.getAll(STORES.themes);
+                    const themeMap = new Map(themes.map(t => [t.id, t.name]));
+                    existingLinksContainer.innerHTML = '';
+
+                    if (links.length === 0) {
+                        existingLinksContainer.innerHTML = '<p>No links created yet.</p>';
+                        return;
+                    }
+                    const ul = document.createElement('ul');
+                    ul.className = 'list-group';
+                    for (const link of links.sort((a,b) => b.id - a.id)) { // Newest first
+                        const li = document.createElement('li');
+                        li.className = 'list-item';
+                        const themeNames = link.themeIds.map(id => themeMap.get(id) || 'Unknown Theme').join(', ');
+                        
+                        // Fetch Ayah details for display (can be slow if many links, consider optimizing)
+                        const ayah1 = await DB.getItem(STORES.ayahs, link.ayahId1);
+                        const ayah2 = await DB.getItem(STORES.ayahs, link.ayahId2);
+                        const ayah1Ref = ayah1 ? `${ayah1.surah}:${ayah1.ayahNum}` : link.ayahId1;
+                        const ayah2Ref = ayah2 ? `${ayah2.surah}:${ayah2.ayahNum}` : link.ayahId2;
+
+                        li.innerHTML = `
+                            <div>
+                                <strong>Link: ${ayah1Ref} &harr; ${ayah2Ref}</strong><br>
+                                Themes: ${themeNames}<br>
+                                <small>Notes: ${link.notes || 'N/A'}</small>
+                            </div>
+                            <div class="actions">
+                                <button class="delete-link-btn danger" data-id="${link.id}">Delete</button>
+                            </div>
+                        `;
+                        ul.appendChild(li);
+                    }
+                    existingLinksContainer.appendChild(ul);
+                    document.querySelectorAll('.delete-link-btn').forEach(btn => btn.onclick = (e) => this.deleteLink(e.target.dataset.id));
+                },
+                async deleteLink(id) {
+                     if (!confirm('Are you sure you want to delete this link?')) return;
+                     try {
+                        await DB.deleteItem(STORES.links, parseInt(id));
+                        alert('Link deleted successfully.');
+                        this.renderLinksList();
+                        this.Graph.refresh();
+                     } catch (error) {
+                        alert('Error deleting link: ' + error);
+                        console.error('Error deleting link:', error);
+                     }
+                },
+                async saveConcordanceEntry() {
+                    const keyword = concordanceKeywordInput.value.trim();
+                    const type = concordanceTypeSelect.value;
+                    const ayahRefStr = concordanceAyahInput.value.trim();
+                    const notes = concordanceNotesInput.value.trim();
+
+                    if (!keyword || !ayahRefStr) {
+                        alert('Keyword and Ayah reference are required.');
+                        return;
+                    }
+                    const formatAyahId = (str) => {
+                        const parts = str.split(':');
+                        if (parts.length !== 2) return null;
+                        const s = parseInt(parts[0]);
+                        const a = parseInt(parts[1]);
+                        if (isNaN(s) || isNaN(a)) return null;
+                        return `S${String(s).padStart(3, '0')}A${String(a).padStart(3, '0')}`;
+                    };
+                    const ayahId = formatAyahId(ayahRefStr);
+                    if (!ayahId) {
+                        alert('Invalid Ayah format. Use S:A, e.g., 1:1.');
+                        return;
+                    }
+                    const checkAyah = await DB.getItem(STORES.ayahs, ayahId);
+                    if (!checkAyah) {
+                        alert(`Ayah ${ayahRefStr} not found. Ensure data.AM is loaded and reference is correct.`);
+                        return;
+                    }
+
+                    const entryData = { keyword, type, ayahId, notes };
+                    try {
+                        await DB.addItem(STORES.concordance, entryData);
+                        alert('Concordance entry saved.');
+                        concordanceKeywordInput.value = '';
+                        concordanceAyahInput.value = '';
+                        concordanceNotesInput.value = '';
+                        this.renderConcordanceEntries();
+                    } catch (error) {
+                        alert('Error saving concordance entry: ' + error);
+                        console.error('Error saving concordance entry:', error);
+                    }
+                },
+                async renderConcordanceEntries() {
+                    concordanceEntriesContainer.innerHTML = '<div class="loader"></div>';
+                    const entries = await DB.getAll(STORES.concordance);
+                    concordanceEntriesContainer.innerHTML = '';
+                    if (entries.length === 0) {
+                        concordanceEntriesContainer.innerHTML = '<p>No concordance entries yet.</p>';
+                        return;
+                    }
+                    const ul = document.createElement('ul');
+                    ul.className = 'list-group';
+                    for (const entry of entries.sort((a,b) => b.id - a.id)) { // Newest first
+                        const li = document.createElement('li');
+                        li.className = 'list-item';
+                        const ayah = await DB.getItem(STORES.ayahs, entry.ayahId);
+                        const ayahRef = ayah ? `${ayah.surah}:${ayah.ayahNum}` : entry.ayahId;
+                        li.innerHTML = `
+                            <div>
+                                <strong>${entry.keyword}</strong> (${entry.type}) - Ayah: ${ayahRef}<br>
+                                <small>Notes: ${entry.notes || 'N/A'}</small>
+                            </div>
+                            <div class="actions">
+                                <button class="delete-concordance-btn danger" data-id="${entry.id}">Delete</button>
+                            </div>
+                        `;
+                        ul.appendChild(li);
+                    }
+                    concordanceEntriesContainer.appendChild(ul);
+                    document.querySelectorAll('.delete-concordance-btn').forEach(btn => btn.onclick = (e) => this.deleteConcordanceEntry(e.target.dataset.id));
+                },
+                async deleteConcordanceEntry(id) {
+                    if (!confirm('Are you sure you want to delete this concordance entry?')) return;
+                     try {
+                        await DB.deleteItem(STORES.concordance, parseInt(id));
+                        alert('Concordance entry deleted.');
+                        this.renderConcordanceEntries();
+                     } catch (error) {
+                        alert('Error deleting concordance entry: ' + error);
+                        console.error('Error deleting concordance entry:', error);
+                     }
+                },
+                Graph: {
+                    init() {
+                        if (typeof cytoscape === 'undefined' || !graphContainer) {
+                            console.error("Cytoscape or graphContainer not available.");
+                            if (graphContainer) graphContainer.innerHTML = "<p style='color:red'>Graph library not loaded or error.</p>";
+                            return;
+                        }
+                        try {
+                            cy = cytoscape({
+                                container: graphContainer,
+                                style: [
+                                    {
+                                        selector: 'node',
+                                        style: {
+                                            'background-color': 'var(--secondary-color)',
+                                            'label': 'data(label)',
+                                            'color': 'var(--text-color)',
+                                            'font-size': '10px',
+                                            'text-valign': 'center',
+                                            'text-halign': 'center',
+                                            'width': '60px',
+                                            'height': '60px',
+                                            'border-width': 2,
+                                            'border-color': 'var(--primary-color)',
+                                            'box-shadow': '0 0 5px var(--primary-color)', // Glow effect for nodes
+                                        }
+                                    },
+                                    {
+                                        selector: 'edge',
+                                        style: {
+                                            'width': 2,
+                                            'line-color': 'var(--border-color)',
+                                            'target-arrow-color': 'var(--border-color)',
+                                            'target-arrow-shape': 'triangle',
+                                            'curve-style': 'bezier',
+                                            // For "psionic energy trails" - basic animated dash
+                                            'line-style': 'dashed',
+                                            'line-dash-pattern': [6, 3],
+                                            'line-dash-offset': 24,
+                                            'animation-duration': '1s',
+                                            'animation-timing-function': 'linear',
+                                            'animation-iteration-count': 'infinite',
+                                            'animation-name': 'dashoffset', // Custom animation name
+                                            'animation-play-state': 'running'
+                                        }
+                                    },
+                                    { // Style for edges with psionic trail effect
+                                        selector: 'edge.psionic',
+                                        style: {
+                                            'line-color': 'var(--psionic-trail-color)',
+                                            'target-arrow-color': 'var(--psionic-trail-color)',
+                                            'width': 3,
+                                            'z-index': 999, // Bring to front
+                                            'shadow-blur': 10,
+                                            'shadow-color': 'var(--psionic-trail-color)',
+                                            'shadow-opacity': 0.7
+                                        }
+                                    }
+                                ],
+                                layout: {
+                                    name: 'cose', // Concentric, cose, cola, dagre, grid etc.
+                                    animate: true,
+                                    padding: 30
+                                }
+                            });
+
+                            // Add custom animation for dashed lines
+                            const style = document.createElement('style');
+                            style.innerHTML = `
+                                @keyframes dashoffset {
+                                    to {
+                                        stroke-dashoffset: 0;
+                                    }
+                                }
+                            `;
+                            document.head.appendChild(style);
+                            
+                            // Tooltip for nodes
+                            // Tooltip for nodes
+                            let tooltipDiv = document.createElement('div');
+                            tooltipDiv.classList.add('cytoscape-tooltip'); // For styling
+                            document.body.appendChild(tooltipDiv);
+                            tooltipDiv.style.display = 'none'; // Initially hidden
+
+                            cy.on('mouseover', 'node', async function(event){
+                                let node = event.target;
+                                let ayahId = node.id();
+                                const ayah = await DB.getItem(STORES.ayahs, ayahId);
+                                if (ayah) {
+                                    tooltipDiv.innerHTML = `<strong>${ayah.surah}:${ayahIdToAyahNum(ayahId)} (${ayahId})</strong><br><span class="arabic-text">${ayah.arabic.substring(0,70)}...</span><br><span class="urdu-text">${ayah.urdu.substring(0,70)}...</span>`;
+                                    tooltipDiv.style.display = 'block';
+                                    
+                                    // Position tooltip using pageX/pageY from the original browser event
+                                    // This positions relative to the document, accounting for scroll
+                                    const offsetX = 15; // Offset from the mouse cursor
+                                    const offsetY = 15;
+                                    
+                                    tooltipDiv.style.left = event.originalEvent.pageX + offsetX + 'px';
+                                    tooltipDiv.style.top = event.originalEvent.pageY + offsetY + 'px';
+
+                                    // Basic boundary detection to prevent tooltip from going off-screen
+                                    // Needs tooltipDiv to be visible to get offsetWidth/Height, so might need a slight delay or calculate after setting content
+                                    // For simplicity, this is a basic adjustment. More robust solutions exist.
+                                    requestAnimationFrame(() => { // Ensure dimensions are available
+                                        const tooltipRect = tooltipDiv.getBoundingClientRect();
+                                        if (event.originalEvent.pageX + offsetX + tooltipRect.width > window.innerWidth + window.scrollX) {
+                                            tooltipDiv.style.left = event.originalEvent.pageX - tooltipRect.width - offsetX + 'px';
+                                        }
+                                        if (event.originalEvent.pageY + offsetY + tooltipRect.height > window.innerHeight + window.scrollY) {
+                                            tooltipDiv.style.top = event.originalEvent.pageY - tooltipRect.height - offsetY + 'px';
+                                        }
+                                    });
+                                }
+                            });
+
+                            cy.on('mouseout', 'node', function(){
+                                tooltipDiv.style.display = 'none';
+                            });
+                            
+                            cy.on('tap', 'node', async function(event){
+                                let node = event.target;
+                                let ayahId = node.id();
+                                const ayah = await DB.getItem(STORES.ayahs, ayahId);
+                                if (ayah) {
+                                    // Find the Ayah element in the Quran Browser list and scroll to it
+                                    const surahNumForSelectedNode = ayah.surah;
+                                    if (parseInt(surahSelect.value) !== surahNumForSelectedNode) {
+                                        surahSelect.value = surahNumForSelectedNode;
+                                        await UI.displayAyahsForSurah(surahNumForSelectedNode); // This will re-render ayahListContainer
+                                    }
+                                    
+                                    // Highlight and scroll after ayahs are displayed
+                                    setTimeout(() => { // Ensure DOM is updated
+                                        const ayahElementInList = ayahListContainer.querySelector(`.ayah-item[data-id="${ayahId}"]`);
+                                        if (ayahElementInList) {
+                                            UI.selectAyah(ayah, ayahElementInList); // Selects and updates detail panel
+                                            ayahElementInList.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                        } else {
+                                            UI.selectAyah(ayah); // Fallback to just updating detail panel
+                                        }
+                                    }, 100); // Small delay for DOM updates
+
+                                    // Switch to Quran Browser tab
+                                    const quranBrowserTabButton = document.querySelector('.tab-button[data-tab="quranBrowserTab"]');
+                                    if (quranBrowserTabButton && !quranBrowserTabButton.classList.contains('active')) {
+                                        quranBrowserTabButton.click();
+                                    }
+                                }
+                            });
+
+
+                        } catch (e) {
+                            console.error("Error initializing Cytoscape:", e);
+                            graphContainer.innerHTML = "<p style='color:red'>Error initializing graph. Check console.</p>";
+                        }
+                    },
+                    async refresh() {
+                        if (!cy) this.init();
+                        if (!cy || typeof cy.elements !== 'function') { // Check if cy is properly initialized
+                            console.warn("Cannot refresh graph: Cytoscape instance not ready.");
+                            return;
+                        }
+
+                        cy.elements().remove(); // Clear existing graph
+
+                        const links = await DB.getAll(STORES.links);
+                        const themes = await DB.getAll(STORES.themes);
+                        const themeMap = new Map(themes.map(t => [t.id, t]));
+                        
+                        const filterThemeId = graphFilterThemeSelect.value ? parseInt(graphFilterThemeSelect.value) : null;
+
+                        const nodes = new Map();
+                        const edges = [];
+
+                        for (const link of links) {
+                            if (filterThemeId && !link.themeIds.includes(filterThemeId)) {
+                                continue;
+                            }
+
+                            if (!nodes.has(link.ayahId1)) {
+                                const ayah1 = await DB.getItem(STORES.ayahs, link.ayahId1);
+                                nodes.set(link.ayahId1, { data: { id: link.ayahId1, label: ayah1 ? `${ayah1.surah}:${ayahIdToAyahNum(link.ayahId1)}` : link.ayahId1 } });
+                            }
+                            if (!nodes.has(link.ayahId2)) {
+                                const ayah2 = await DB.getItem(STORES.ayahs, link.ayahId2);
+                                nodes.set(link.ayahId2, { data: { id: link.ayahId2, label: ayah2 ? `${ayah2.surah}:${ayahIdToAyahNum(link.ayahId2)}` : link.ayahId2 } });
+                            }
+                            
+                            // Create one edge per theme for better visual distinction or combine them
+                            const firstThemeId = link.themeIds[0]; // Use first theme for basic coloring
+                            const edgeColor = firstThemeId && themeMap.get(firstThemeId) ? (themeMap.get(firstThemeId).color || 'var(--border-color)') : 'var(--border-color)';
+
+                            edges.push({ 
+                                data: { 
+                                    id: `e${link.id}`, 
+                                    source: link.ayahId1, 
+                                    target: link.ayahId2,
+                                    themes: link.themeIds.map(tid => themeMap.get(tid)?.name).join(', '),
+                                    notes: link.notes
+                                },
+                                classes: 'psionic' // Apply psionic style to all edges for now
+                                // style: { 'line-color': edgeColor, 'target-arrow-color': edgeColor } // Dynamic edge color
+                            });
+                        }
+                        
+                        cy.add(Array.from(nodes.values()));
+                        cy.add(edges);
+
+                        const layout = cy.layout({ name: 'cose', animate: true, padding: 50, idealEdgeLength: 100, nodeOverlap: 20 });
+                        layout.run();
+                        cy.fit();
+                        cy.center();
+                    }
+                },
+                Search: {
+                    async execute() {
+                        const query = searchQueryInput.value.trim().toLowerCase();
+                        searchResultsContainer.innerHTML = '<div class="loader"></div>';
+                        if (!query) {
+                            searchResultsContainer.innerHTML = '<p>Please enter a search query.</p>';
+                            return;
+                        }
+
+                        const results = {
+                            themes: [],
+                            links: [],
+                            concordance: []
+                        };
+
+                        // Search Themes
+                        const themes = await DB.getAll(STORES.themes);
+                        results.themes = themes.filter(t => t.name.toLowerCase().includes(query) || (t.description && t.description.toLowerCase().includes(query)));
+
+                        // Search Links (notes)
+                        const links = await DB.getAll(STORES.links);
+                        results.links = links.filter(l => l.notes && l.notes.toLowerCase().includes(query));
+                        
+                        // Search Concordance (keywords and notes)
+                        const concordanceEntries = await DB.getAll(STORES.concordance);
+                        results.concordance = concordanceEntries.filter(c => c.keyword.toLowerCase().includes(query) || (c.notes && c.notes.toLowerCase().includes(query)));
+
+                        this.renderResults(results);
+                    },
+                    async renderResults(results) {
+                        searchResultsContainer.innerHTML = '';
+                        let html = '';
+
+                        if (results.themes.length > 0) {
+                            html += '<h3>Themes Found:</h3><ul>';
+                            for(const theme of results.themes) {
+                                html += `<li class="list-item">${theme.name} ${theme.description ? `- ${theme.description.substring(0,100)}...` : ''}</li>`;
+                            }
+                            html += '</ul>';
+                        }
+                        if (results.links.length > 0) {
+                            html += '<h3>Links Found (in Notes):</h3><ul>';
+                            for(const link of results.links) {
+                                const ayah1 = await DB.getItem(STORES.ayahs, link.ayahId1);
+                                const ayah2 = await DB.getItem(STORES.ayahs, link.ayahId2);
+                                const ayah1Ref = ayah1 ? `${ayah1.surah}:${ayah1.ayahNum}` : link.ayahId1;
+                                const ayah2Ref = ayah2 ? `${ayah2.surah}:${ayah2.ayahNum}` : link.ayahId2;
+                                html += `<li class="list-item">Link: ${ayah1Ref} &harr; ${ayah2Ref} - Notes: ${link.notes.substring(0,100)}...</li>`;
+                            }
+                            html += '</ul>';
+                        }
+                        if (results.concordance.length > 0) {
+                            html += '<h3>Concordance Entries Found:</h3><ul>';
+                            for(const entry of results.concordance) {
+                                const ayah = await DB.getItem(STORES.ayahs, entry.ayahId);
+                                const ayahRef = ayah ? `${ayah.surah}:${ayah.ayahNum}` : entry.ayahId;
+                                html += `<li class="list-item">${entry.keyword} (${entry.type}) - Ayah: ${ayahRef} ${entry.notes ? `- ${entry.notes.substring(0,100)}...` : ''}</li>`;
+                            }
+                            html += '</ul>';
+                        }
+
+                        if (html === '') {
+                            html = '<p>No results found for your query.</p>';
+                        }
+                        searchResultsContainer.innerHTML = html;
+                    }
+                },
+                Heatmap: {
+                    async render() {
+                        heatmapContainer.innerHTML = '<div class="loader"></div>';
+                        const links = await DB.getAll(STORES.links);
+                        const selectedThemeId = heatmapThemeSelect.value ? parseInt(heatmapThemeSelect.value) : null;
+                        
+                        const surahThemeCounts = {}; // { surahNum: { themeId: count, totalLinks: count } }
+                        let maxLinksInSurahForTheme = 0;
+
+                        for (const link of links) {
+                            const processAyah = async (ayahId) => {
+                                const ayah = await DB.getItem(STORES.ayahs, ayahId);
+                                if (!ayah) return;
+                                const surahNum = ayah.surah;
+                                if (!surahThemeCounts[surahNum]) {
+                                    surahThemeCounts[surahNum] = { totalLinks: 0 };
+                                }
+                                
+                                let linkMatchesFilter = !selectedThemeId; // True if no theme filter
+                                link.themeIds.forEach(themeId => {
+                                    if (selectedThemeId && themeId === selectedThemeId) {
+                                        linkMatchesFilter = true;
+                                    }
+                                    if (!selectedThemeId || themeId === selectedThemeId) { // Count specific theme or all themes contributing to total
+                                        surahThemeCounts[surahNum][themeId] = (surahThemeCounts[surahNum][themeId] || 0) + 1;
+                                    }
+                                });
+
+                                if (linkMatchesFilter) {
+                                    surahThemeCounts[surahNum].totalLinks = (surahThemeCounts[surahNum].totalLinks || 0) + 1;
+                                    if (surahThemeCounts[surahNum].totalLinks > maxLinksInSurahForTheme) {
+                                        maxLinksInSurahForTheme = surahThemeCounts[surahNum].totalLinks;
+                                    }
+                                }
+                            };
+                            await processAyah(link.ayahId1);
+                            await processAyah(link.ayahId2); // Count both Ayahs if they fall in different Surahs for the link
+                        }
+                        
+                        heatmapContainer.innerHTML = '';
+                        const surahList = await QuranData.getSurahList(); // Get all Surahs for display
+                        surahList.forEach(surahInfo => {
+                            const surahNum = surahInfo.surahNum;
+                            const data = surahThemeCounts[surahNum];
+                            const cell = document.createElement('div');
+                            cell.className = 'surah-heatmap-cell';
+                            
+                            let intensity = 0;
+                            let countText = "0 links";
+
+                            if (data && data.totalLinks > 0 && maxLinksInSurahForTheme > 0) {
+                                intensity = (data.totalLinks / maxLinksInSurahForTheme) * 100;
+                                countText = `${data.totalLinks} link(s)`;
+                                if (selectedThemeId && data[selectedThemeId]) {
+                                    countText = `${data[selectedThemeId]} link(s) for selected theme`;
+                                } else if (selectedThemeId && !data[selectedThemeId]) {
+                                    countText = `0 link(s) for selected theme`;
+                                    intensity = 0;
+                                }
+                            }
+                            
+                            cell.innerHTML = `
+                                <h4>${surahInfo.name} (${surahNum})</h4>
+                                <p>${countText}</p>
+                                <div class="theme-intensity-bar" style="width: ${intensity}%; background-color: ${intensity > 0 ? 'var(--primary-color)' : 'var(--border-color)'}; opacity: ${intensity > 0 ? intensity/100 * 0.7 + 0.3 : 0.3};"></div>
+                            `;
+                            heatmapContainer.appendChild(cell);
+                        });
+                        if (heatmapContainer.innerHTML === '') {
+                            heatmapContainer.innerHTML = '<p>No data to display for heatmap. Create some links first.</p>';
+                        }
+                    }
+                },
+                applyUISkin(themeName) {
+                    document.body.className = ''; // Clear existing theme classes
+                    if (themeName === 'ancient-scroll') {
+                        document.body.classList.add('theme-ancient-scroll');
+                    } else {
+                        // Default is neural-weave, no class needed or add 'theme-neural-weave' explicitly
+                    }
+                    // Update graph style if necessary
+                    if (cy) {
+                        // This is a simplified way. Ideally, graph styles are also themeable.
+                        // For now, just re-init or re-style essential parts.
+                        // cy.style().update() can be used if styles are defined as variables.
+                        // As a quick fix, re-running layout might help if colors are CSS var based.
+                        // UI.Graph.init(); // Re-init to pick up CSS vars, or:
+                        UI.Graph.refresh(); // This will re-apply styles defined in JS if they use CSS vars
+                    }
+                },
+                async backupData() {
+                    try {
+                        const themes = await DB.getAll(STORES.themes);
+                        const links = await DB.getAll(STORES.links);
+                        const concordance = await DB.getAll(STORES.concordance);
+
+                        const backupObject = {
+                            version: 1,
+                            timestamp: new Date().toISOString(),
+                            data: {
+                                themes,
+                                links,
+                                concordance
+                            }
+                        };
+                        const jsonString = JSON.stringify(backupObject, null, 2);
+                        const blob = new Blob([jsonString], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `QuranConnectPro_Backup_${new Date().toISOString().slice(0,10)}.json`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        alert('Data backup successful!');
+                    } catch (error) {
+                        alert('Error during backup: ' + error);
+                        console.error('Backup error:', error);
+                    }
+                },
+                async restoreData(file) {
+                    if (!confirm('Restoring data will overwrite existing themes, links, and concordance entries. Are you sure you want to proceed?')) {
+                        return;
+                    }
+                    try {
+                        const text = await file.text();
+                        const backupObject = JSON.parse(text);
+
+                        if (!backupObject.data || !backupObject.data.themes || !backupObject.data.links || !backupObject.data.concordance) {
+                            throw new Error('Invalid backup file format.');
+                        }
+
+                        loadingStatus.textContent = 'Restoring data...';
+                        loadingSpinner.classList.remove('hidden');
+                        initialLoadingScreen.classList.remove('hidden'); // Show loading screen
+                        appContent.classList.add('hidden');
+
+
+                        await DB.clearStore(STORES.themes);
+                        await DB.clearStore(STORES.links);
+                        await DB.clearStore(STORES.concordance);
+
+                        await DB.addItems(STORES.themes, backupObject.data.themes);
+                        await DB.addItems(STORES.links, backupObject.data.links);
+                        await DB.addItems(STORES.concordance, backupObject.data.concordance);
+                        
+                        alert('Data restored successfully! The app will now reload all data.');
+                        // Reload necessary UI components
+                        await this.populateThemeSelectors();
+                        await this.renderThemesList();
+                        await this.renderLinksList();
+                        await this.renderConcordanceEntries();
+                        this.Graph.refresh();
+                        this.Heatmap.render();
+
+                    } catch (error) {
+                        alert('Error during restore: ' + error);
+                        console.error('Restore error:', error);
+                    } finally {
+                        initialLoadingScreen.classList.add('hidden');
+                        appContent.classList.remove('hidden');
+                        loadingSpinner.classList.add('hidden');
+                        document.getElementById('restoreDataFile').value = ''; // Reset file input
+                    }
+                },
+                async addSampleData() {
+                    const themesCount = await DB.count(STORES.themes);
+                    if (themesCount > 0) { // Sample data likely exists or user has added data
+                        return;
+                    }
+
+                    console.log("Adding sample data...");
+
+                    try {
+                        // Sample Themes
+                        const theme1Id = await DB.addItem(STORES.themes, { name: "Tawhid (Oneness of God)", description: "Ayahs discussing the absolute oneness of Allah." });
+                        const theme2Id = await DB.addItem(STORES.themes, { name: "Attributes of Allah", description: "Specific attributes of Allah mentioned in the Quran.", parentId: theme1Id });
+                        const theme3Id = await DB.addItem(STORES.themes, { name: "Day of Judgment", description: "Ayahs related to the final day and accountability." });
+                        const theme4Id = await DB.addItem(STORES.themes, { name: "Prayer (Salah)", description: "Ayahs emphasizing the importance of prayer." });
+
+                        // Sample Links (Ensure these Ayah IDs exist if data.AM is small/test version)
+                        // Assuming S001A001, S002A255, S112A001, S112A002, S002A003, S002A043 exist
+                        const ayahId_1_1 = "S001A001"; const ayah_1_1 = await DB.getItem(STORES.ayahs, ayahId_1_1);
+                        const ayahId_2_255 = "S002A255"; const ayah_2_255 = await DB.getItem(STORES.ayahs, ayahId_2_255);
+                        const ayahId_112_1 = "S112A001"; const ayah_112_1 = await DB.getItem(STORES.ayahs, ayahId_112_1);
+                        const ayahId_112_2 = "S112A002"; const ayah_112_2 = await DB.getItem(STORES.ayahs, ayahId_112_2);
+                        const ayahId_2_3 = "S002A003"; const ayah_2_3 = await DB.getItem(STORES.ayahs, ayahId_2_3);
+                        const ayahId_2_43 = "S002A043"; const ayah_2_43 = await DB.getItem(STORES.ayahs, ayahId_2_43);
+
+
+                        if (ayah_2_255 && ayah_112_2) {
+                             await DB.addItem(STORES.links, { ayahId1: ayahId_2_255, ayahId2: ayahId_112_2, themeIds: [theme2Id], notes: "Both Ayahs describe Allah's self-sufficiency and eternal nature. 'Allah, As-Samad' and 'Neither drowsiness nor sleep overtakes Him'." });
+                        }
+                        if (ayah_1_1 && ayah_112_1) {
+                            await DB.addItem(STORES.links, { ayahId1: ayahId_1_1, ayahId2: ayahId_112_1, themeIds: [theme1Id], notes: "Al-Fatiha starts with praising Allah, Al-Ikhlas defines His Oneness." });
+                        }
+                         if (ayah_2_3 && ayah_2_43) {
+                            await DB.addItem(STORES.links, { ayahId1: ayahId_2_3, ayahId2: ayahId_2_43, themeIds: [theme4Id], notes: "Both ayahs mention establishing prayer (Salah)." });
+                        }
+
+
+                        // Sample Concordance Entries
+                        if (ayah_1_1) {
+                            await DB.addItem(STORES.concordance, { keyword: "ر ح م", type: "root", ayahId: ayahId_1_1, notes: "Root for Ar-Rahman, Ar-Rahim in Al-Fatiha." });
+                            await DB.addItem(STORES.concordance, { keyword: "Merciful", type: "translation", ayahId: ayahId_1_1, notes: "Translation of Ar-Rahman/Ar-Rahim." });
+                        }
+                        if (ayah_2_255) {
+                            await DB.addItem(STORES.concordance, { keyword: "الله", type: "root", ayahId: ayahId_2_255, notes: "The name Allah in Ayat al-Kursi." });
+                        }
+                        if (ayah_112_1) {
+                             await DB.addItem(STORES.concordance, { keyword: "أحد", type: "root", ayahId: ayahId_112_1, notes: "Keyword for 'The One' in Surah Al-Ikhlas." });
+                        }
+
+                        console.log("Sample data added.");
+                        // Refresh UI elements that display this data
+                        await this.populateThemeSelectors();
+                        await this.renderThemesList();
+                        await this.renderLinksList();
+                        await this.renderConcordanceEntries();
+                    } catch (error) {
+                        console.error("Error adding sample data:", error);
+                    }
+                }
+            };
+
+            // --- Helper Functions ---
+            function ayahIdToAyahNum(ayahId) { // S002A255 -> 255
+                return parseInt(ayahId.substring(ayahId.indexOf('A') + 1));
+            }
+            
+            // --- Event Listeners ---
+            function setupEventListeners() {
+                document.getElementById('themeSwitcher').onchange = (e) => UI.applyUISkin(e.target.value);
+                document.getElementById('backupDataBtn').onclick = () => UI.backupData();
+                document.getElementById('restoreDataFile').onchange = (e) => {
+                    if (e.target.files.length > 0) UI.restoreData(e.target.files[0]);
+                };
+
+                document.getElementById('setAyah1FromSelectionBtn').onclick = () => UI.setAyahInputFromSelection('linkAyah1');
+                document.getElementById('setAyah2FromSelectionBtn').onclick = () => UI.setAyahInputFromSelection('linkAyah2');
+                document.getElementById('saveLinkBtn').onclick = () => UI.saveLink();
+
+                document.getElementById('saveThemeBtn').onclick = () => UI.saveTheme();
+                document.getElementById('cancelEditThemeBtn').onclick = () => UI.clearThemeForm();
+
+                document.getElementById('setConcordanceAyahFromSelectionBtn').onclick = () => UI.setAyahInputFromSelection('concordanceAyah');
+                document.getElementById('saveConcordanceEntryBtn').onclick = () => UI.saveConcordanceEntry();
+
+                document.getElementById('refreshGraphBtn').onclick = () => UI.Graph.refresh();
+                graphFilterThemeSelect.onchange = () => UI.Graph.refresh();
+
+                document.getElementById('executeSearchBtn').onclick = () => UI.Search.execute();
+                searchQueryInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') UI.Search.execute(); });
+                
+                heatmapThemeSelect.onchange = () => UI.Heatmap.render();
+
+                document.getElementById('currentYear').textContent = new Date().getFullYear();
+            }
+
+            // --- Initialization ---
+            async function initApp() {
+                try {
+                    await DB.open();
+                    const dataLoadedSuccessfully = await QuranData.checkAndLoadDataAM();
+                    
+                    loadingSpinner.classList.add('hidden');
+
+                    if (dataLoadedSuccessfully) {
+                        initialLoadingScreen.classList.add('hidden');
+                        appContent.classList.remove('hidden');
+
+                        UI.initTabs();
+                        await UI.populateSurahSelect(); // This will also load Ayahs for the first Surah
+                        await UI.populateThemeSelectors();
+                        await UI.renderThemesList();
+                        await UI.renderLinksList();
+                        await UI.renderConcordanceEntries();
+                        
+                        // Add sample data on first successful load if DB is empty for user data
+                        const totalAyahsInDB = await DB.count(STORES.ayahs);
+                        if(totalAyahsInDB > 0) { // Ensure Ayah data is present before adding samples that link to it
+                           await UI.addSampleData(); // This checks internally if sample data should be added
+                        } else {
+                           console.warn("Ayah data not found, skipping sample data addition.");
+                        }
+
+
+                        UI.Graph.init(); // Initialize graph after main content is visible
+                        // UI.Graph.refresh(); // Initial population of graph, called by tab switch
+                        // UI.Heatmap.render(); // Initial population of heatmap, called by tab switch
+                        setupEventListeners();
+                        UI.applyUISkin(themeSwitcher.value); // Apply default or saved theme
+
+                        // Check if Cytoscape is loaded
+                        if (typeof cytoscape === 'undefined' || cytoscape.name === "dummy") { // Check for dummy
+                             const graphTabButton = document.querySelector('button[data-tab="graphTab"]');
+                             if(graphTabButton) graphTabButton.disabled = true;
+                             if(graphTabButton) graphTabButton.title = "Graph library not loaded.";
+                             if(graphContainer) graphContainer.innerHTML = "<p style='color:red; text-align:center; padding-top: 50px;'>Cytoscape.js library not embedded. Graph cannot be displayed. Please embed the library in the HTML source.</p>";
+                        }
+
+
+                    } else {
+                        loadingStatus.textContent = 'Failed to load Quran data. Application cannot start.';
+                        // Keep loading screen visible with error.
+                    }
+                } catch (error) {
+                    console.error('Initialization failed:', error);
+                    loadingStatus.textContent = 'Application initialization error: ' + error;
+                    loadingSpinner.classList.add('hidden');
+                }
+            }
+
+            // Start the application
+            window.onload = initApp;
+
+        })();
+    </script>
+</body>
+</html>
